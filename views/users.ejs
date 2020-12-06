@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <head>
+        <%- include ('partials/head.ejs'); -%>
+    </head>
+</head>
+<body>
+	<div class="container">
+        <header>
+            <%- include ('partials/header.ejs'); -%>
+        </header>
+		<h1 class="text-center">Utilisateurs</h1>
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Nom</th>
+                    <th scope="col">Classe</th>					
+                    <th scope="col">Action</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<% data.forEach(d => { %>
+					<tr>
+						<th scope="row"><%= d.ID %></th>
+						<td><%= d.Title %></td>
+                        <td><%= d.Classe %></td>						
+                        <td><a href="/delete/<%= d.ID %>" class="btn btn-danger">Suppimer</a>   <a href="/edit/<%= d.ID %>" class="btn btn-primary">Modifier</a></td>	                        </td>
+
+					</tr>
+				<% }) %>
+			</tbody>
+		</table>
+        <a href="/add" class="btn btn-primary">Ajouter</a>
+        
+    </div>
+
+    <footer>
+		<%- include ('partials/footer.ejs'); -%>
+	</footer>
+</body>
+</html>
