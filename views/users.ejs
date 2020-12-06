@@ -13,6 +13,18 @@
         <header>
             <%- include ('partials/header.ejs'); -%>
         </header>
+        <form action="/users" method="GET">
+            <table class="table">
+              <tr>
+                <td>
+                  <input type="text" name="filter" class="form-control" placeholder="Search..." value="<%= filter ? filter : '' %>">
+                </td>
+                <td>
+                  <button type="submit" class="btn btn-info">Search</button>
+                </td>
+              </tr>
+            </table>
+          </form>
 		<h1 class="text-center">Utilisateurs</h1>
 		<table class="table">
 			<thead>

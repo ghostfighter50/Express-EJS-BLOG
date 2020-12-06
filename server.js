@@ -23,7 +23,26 @@ app.get('/add', (req, res) => {
 	res.render('add');
 });
 app.get('/users', (req, res) => {
-	res.render('users', { data });
+	const { filter } = req.query;
+	let filterData = [];
+
+	if (filter) {
+		for (let dt of data) {
+			if (
+				dt.Title === filter ||
+				dt.Country === filter ||
+				dt.ID === parseFloat(filter)
+			) {
+				filterData.push(dt);
+			}
+		}
+	}
+
+	else {
+		filterData = data;
+	}
+
+	res.render('users', { data: filterData, filter });
 });
 app.post('/add', (req, res) => {
 	const { title, classe } = req.body;
@@ -79,5 +98,5 @@ app.get('/delete/:id', (req, res) => {
 	res.redirect('/users');
 });
 
-app.listen(process.env.PORT ||8080);
+app.listen(process.env.PORT || 8080);
 console.log('listening on port 8080');
