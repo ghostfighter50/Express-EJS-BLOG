@@ -5,14 +5,14 @@ app.set('view engine', 'ejs');
 
 
 app.get('/', function(req, res) {
-	res.render('pages/index');
+	res.render('index');
 });
 
 app.get('/about', function(req, res) {
-	res.render('pages/about');
+	res.render('about');
 });
 app.get('/contact', function(req, res) {
-	res.render('pages/contact');
+	res.render('contact');
 });
 app.listen(8080);
 console.log('listening on port 8080');
