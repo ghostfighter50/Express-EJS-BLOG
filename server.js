@@ -31,7 +31,7 @@ app.get('/contact', function(req, res) {
 app.get('/add', (req, res) => {
 	res.render('add');
 });
-app.post('/add', createAccountLimiter , (req, res) => {
+app.post('/add' , (req, res) => {
 	const { title, classe } = req.body;
 
 	data.push({ ID: data.length + 1, Title: title, Classe: classe });
