@@ -79,5 +79,5 @@ app.get('/delete/:id', (req, res) => {
 	res.redirect('/users');
 });
 
-app.listen(8080);
+app.listen(process.env.PORT ||8080);
 console.log('listening on port 8080');
