@@ -6,16 +6,11 @@ const rateLimit = require("express-rate-limit");
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100
+  max: 5
 });
 app.use("/users", apiLimiter);
  
-const createAccountLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000	,
-  max: 5, 
-  message:
-    "Too many accounts created from this IP, please try again after an hour"
-});
+
 const readJson = fs.readFileSync('./data/users.json');
 var  data = JSON.parse(readJson);
 app.use(bodyParser.urlencoded({ extended: false }));
