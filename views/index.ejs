@@ -1,24 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<%- include ('partials/head.ejs'); -%>
-</head>
-<body class="container">
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <title>Projet</title>
+    <link rel="stylesheet" href="style.css">   
+  </head>
 
-	<header>
-		<%- include ('partials/header.ejs'); -%>
-	</header>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li id="logo">
+            <a href="#">
+              Diferent language
+            </a>
+          </li>
 
-	<main>
-		<div class="jumbotron">
-			<h1>Site de Mahé et Clément</h1>
-			<p>Développé avec NodeJS, expressJS et Ejs</p>
-		</div>
-	</main>
+          <li><a href="#javascript">Java script</a></li>
+          <li><a href="#html css">Html / Css</a></li>
+          <li><a href="#python">Python</a></li>
+        </ul>
+      </nav>
+      <div id="imagePrincipale">
+        <h1 id="texte">
+          SNT PROJET
+        </h1>
+        <div id="premierTrait"></div>
+        <h3>Apprendre les bases des differents languages</h3>
+      </div>
 
-	<footer>
-		<%- include ('partials/footer.ejs'); -%>
-	</footer>
-	
-</body>
+    </header>
+    <section id="presentation">
+      <div id="texteIntro">
+        <h2>Introduction</h2>
+        <p>Ce site a ete develloper en tant que projet de snt pour permettre au eleve si ils le souhaitent de pouvoir coder dans differents languages.
+          Chacun a le choix entre le Html/css, le python ou encore le javascript. 
+        </p>
+      </div>
+      <div id="contenus">
+        
+        <div class="images">
+          <h4>Python</h4>
+          <a href="#">
+            <img src="media/python.JPG" alt="python">
+          </a>
+        </div>
+        
+        <div class="images">
+          <h4>html et css</h4>
+          <a href="#">
+            <img src="media/htmlcss.jpg" alt="chambre">
+          </a>
+        </div>
+        
+        <div class="images">
+          <h4>Javascript</h4>
+          <a href="#">
+            <img src="media/javascript.png" alt="repas">
+          </a>
+        </div>
+
+      </div>
+    </section>
+    
+    <footer>
+      
+      <div id="deuxiemeTrait">
+      </div>
+      
+      <div id="copyright">
+        <span>© clement et mahe</span>
+      </div>
+
+      </div>
+
+    </footer>
+  </body>
 </html>
