@@ -8,7 +8,7 @@ const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5
 });
-app.use("/users", apiLimiter);
+app.use("/add", apiLimiter);
  
 
 const readJson = fs.readFileSync('./data/users.json');
