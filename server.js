@@ -4,10 +4,13 @@
 
 
 var express = require('express');
+var session = require('express-session'); 
 var fs = require("fs")
 var app = express();
 var bodyParser = require('body-parser');
-const rateLimit = require("express-rate-limit");
+var rateLimit = require("express-rate-limit");
+var ssn
+
 
  //////////////////////////////
 //Limite de requete par IP////
@@ -32,7 +35,6 @@ const readJson = fs.readFileSync('./data/users.json');
 var  data = JSON.parse(readJson);
 
 
-
 ////////////////////////////////
 //Definition des midlewares////
 //////////////////////////////
@@ -42,6 +44,7 @@ var  data = JSON.parse(readJson);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/views'));
 app.use("/add", apiLimiter);
+app.use(session({resave : true, saveUninitialized : true, cookie: { path : '/', httpOnly: false, maxAge  : 24*60*60*1000}, secret: '1234567890QWERT'  }));
 app.set('view engine', 'ejs');
 
 
@@ -64,11 +67,29 @@ app.get('/about', function(req, res) {
 	res.render('about');
 });
 
-//contact.ejs 
+//login.ejs 
 
-app.get('/contact', function(req, res) {
-	res.render('contact');
+app.get('/login', function(req, res) {
+	ssn = req.session
+
+	if(ssn.loggedin == true){res.redirect("/users")}
+
+    else	res.render('login');
 });
+
+app.post('/login', (req, res) => {
+	var { title, mdp } = req.body;
+	ssn = req.session
+	for(var i=0;i<data.length;i++){
+		if(data[i].mdp== mdp && data[i].Title === title ){
+		   console.log("Login found !");
+
+		   ssn.loggedin = true
+		   res.redirect('/users')
+		   return true;
+		}
+	 }
+})
 
 //add.ejs 
 
@@ -85,16 +106,25 @@ app.get('/add', (req, res) => {
 
 
 app.post('/add' , (req, res) => {
-	const { title, classe } = req.body;
+	const { title, classe, mdp } = req.body;
 
-	data.push({ ID: data.length + 1, Title: title, Classe: classe });
+	data.push({ ID: data.length + 1, Title: title, Classe: classe, mdp : mdp });
 	fs.writeFileSync('./data/users.json', JSON.stringify(data, null, 4));
 	res.redirect('/users');
 });
 
-//user.ejs
+
+
+//////////////////
+//Panel Admin////
+////////////////
+
+
 
 app.get('/users', (req, res) => {
+	ssn = req.session
+
+	if(ssn.loggedin == true){
 	const { filter } = req.query;
 	let filterData = [];
 //Parametre de recherche
@@ -102,7 +132,8 @@ app.get('/users', (req, res) => {
 		for (let dt of data) {
 			if (
 				dt.Title === filter ||
-				dt.Country === filter ||
+				dt.Classe === filter ||
+				dt.mdp === filter ||
 				dt.ID === parseFloat(filter)
 			) {
 				filterData.push(dt);
@@ -116,6 +147,10 @@ app.get('/users', (req, res) => {
 	}
 
 	res.render('users', { data: filterData, filter });
+}
+else{
+	res.redirect('/login')
+}
 });
 
 //edit.ejs/:id
@@ -144,7 +179,7 @@ app.get('/edit/:id', (req, res) => {
 
 app.post('/edit/:id', (req, res) => {
 	const { id } = req.params; //parametres de la requete
-	const { title, Classe } = req.body; 
+	const { title, Classe, mdp } = req.body; 
 
 	let dataId;
 	for (let i = 0; i < data.length; i++) {
@@ -155,6 +190,7 @@ app.post('/edit/:id', (req, res) => {
 
 	data[dataId].Title = title;
 	data[dataId].Classe = Classe;
+	data[dataId].mdp = mdp;
 
 	fs.writeFileSync('./data/users.json', JSON.stringify(data, null, 4));
 	res.redirect('/users');
@@ -180,6 +216,15 @@ app.get('/delete/:id', (req, res) => {
 	res.redirect('/users');
 });
 
+app.get('/logout',function(req,res){
+	req.session.destroy(function(err) {
+	  if(err) {
+		console.log(err);
+	  } else {
+		res.redirect('/');
+	  }
+	});
+  });
 ///////////////////////////
 //Lancement du serveur////
 /////////////////////////

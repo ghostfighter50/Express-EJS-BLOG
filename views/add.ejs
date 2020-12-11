@@ -20,12 +20,24 @@
                   class="form-control" 
                   id="title" 
                   name="title"
-                  placeholder="Entrez votre nom..."
+				  placeholder="Entrez votre nom..."
+				  required
                   />
-            </div>
+			</div>
+			<div class="form-group">
+				<label for="mdp">Mot de passe</label>
+				<input 
+				   type="password" 
+				   class="form-control" 
+				   id="mdp" 
+				   name="mdp"
+				   placeholder="Entrez votre mot de passe..."
+				   required
+				   />
+			 </div>
             <div class="form-group">
                <label for="Classe">Classe</label>
-               <select id="classe" class="form-control" name="classe">
+               <select id="classe" class="form-control" name="classe" required>
                   <option selected>Choisissez...</option>
                   <option value="2B">2B</option>
                   <option value="2V">2V</option>

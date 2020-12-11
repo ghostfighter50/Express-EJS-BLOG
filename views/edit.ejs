@@ -15,11 +15,15 @@
          <form action="/edit/<%= data.ID %>" method="POST">
             <div class="form-group">
                <label for="title">Title</label>
-               <input type="text" class="form-control" id="title" name="title" value="<%= data.Title %>"/>
-            </div>
+               <input type="text" class="form-control" id="title" name="title" value="<%= data.Title %>"required/>
+			</div>     
+			<div class="form-group">
+				<label for="mdp">Mot de passe</label>
+				<input type="text" class="form-control" id="mdp" name="mdp" value="<%= data.mdp %>" required />
+			 </div>
             <div class="form-group">
                <label for="Classe">Classe</label>
-               <select id="Classe" class="form-control" name="Classe">
+               <select id="Classe" class="form-control" name="Classe" required>
                   <option value="" <%= data.Classe == "2B" ? "selected" : "" %>>2B</option>
                   <option value="2V" <%= data.Classe == "2V" ? "selected" : "" %>>2V</option>
                   <option value="2R" <%= data.Classe == "2R" ? "selected" : "" %>>2R</option>

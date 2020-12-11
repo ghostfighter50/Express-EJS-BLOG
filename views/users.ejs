@@ -17,7 +17,7 @@
             <table class="table">
                <tr>
                   <td>
-                     <input type="text" name="filter" class="form-control" placeholder="Search..." value="<%= filter ? filter : '' %>">
+                     <input type="text" name="filter" class="form-control" placeholder="Search..."  value="<%= filter ? filter : '' %>">
                   </td>
                   <td>
                      <button type="submit" class="btn btn-info">Search</button>
@@ -31,6 +31,7 @@
                <tr>
                   <th scope="col">ID</th>
                   <th scope="col">Nom</th>
+                  <th scope="col">Mot de Passe</th>
                   <th scope="col">Classe</th>
                   <th scope="col">Action</th>
                </tr>
@@ -40,6 +41,7 @@
                <tr>
                   <th scope="row"><%= d.ID %></th>
                   <td><%= d.Title %></td>
+                  <td><%= d.mdp %></td>
                   <td><%= d.Classe %></td>
                   <td><a href="/delete/<%= d.ID %>" class="btn btn-danger">Suppimer</a>   <a href="/edit/<%= d.ID %>" class="btn btn-primary">Modifier</a></td>
                   </td>
