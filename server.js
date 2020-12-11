@@ -69,12 +69,10 @@ app.get('/about', function(req, res) {
 
 //login.ejs 
 
-app.get('/login', function(req, res) {
+app.get('/login', apiLimiter, function(req, res) {
 	ssn = req.session
-
 	if(ssn.loggedin == true){res.redirect("/users")}
-
-    else	res.render('login');
+    elseres.render('login');
 });
 
 app.post('/login', (req, res) => {
