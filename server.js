@@ -77,15 +77,17 @@ app.get('/login', function(req, res) {
 app.post('/login',apiLimiter, (req, res) => {
 	var { title, mdp } = req.body;
 	ssn = req.session
-	for(var i=0;i<data.length;i++){
-		if(data[i].mdp== mdp && data[i].Title === title ){
+	function creds() {for(var i=0;i<data.length;i++){
+		if(data[i].mdp == mdp && data[i].Title === title ){
 		   console.log("Login found !");
-
 		   ssn.loggedin = true
 		   res.redirect('/users')
-		   return true;
+		   return true
 		}
+	 return false
 	 }
+	}
+	if(creds() == false) return res.redirect("/login")
 })
 
 //add.ejs 
