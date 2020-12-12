@@ -9,8 +9,7 @@ var fs = require("fs")
 var app = express();
 var bodyParser = require('body-parser');
 var rateLimit = require("express-rate-limit");
-var ssn
-
+var ssn 
 
  //////////////////////////////
 //Limite de requete par IP////
@@ -69,13 +68,13 @@ app.get('/about', function(req, res) {
 
 //login.ejs 
 
-app.get('/login', apiLimiter, function(req, res) {
+app.get('/login', function(req, res) {
 	ssn = req.session
 	if(ssn.loggedin == true){res.redirect("/users")}
     else res.render('login');
 });
 
-app.post('/login', (req, res) => {
+app.post('/login',apiLimiter, (req, res) => {
 	var { title, mdp } = req.body;
 	ssn = req.session
 	for(var i=0;i<data.length;i++){
@@ -105,10 +104,13 @@ app.get('/add', (req, res) => {
 
 app.post('/add' , (req, res) => {
 	const { title, classe, mdp } = req.body;
+	ssn = req.session
 
-	data.push({ ID: data.length + 1, Title: title, Classe: classe, mdp : mdp });
+	if(!ssn.loggedin) return res.redirect("/login")
+	else{data.push({ ID: data.length + 1, Title: title, Classe: classe, mdp : mdp });
 	fs.writeFileSync('./data/users.json', JSON.stringify(data, null, 4));
 	res.redirect('/users');
+}
 });
 
 
@@ -161,7 +163,6 @@ app.get('/edit/:id', (req, res) => {
 		if (Number(id) === data[i].ID) {
 			dataId = i;
 		}
-		else{res.redirect('/users')}
 	}
 
 	res.render('edit', { data: data[dataId] });
@@ -175,7 +176,7 @@ app.get('/edit/:id', (req, res) => {
 
 
 
-app.post('/edit/:id', (req, res) => {
+app.post('/edit/:id' , (req, res) => {
 	const { id } = req.params; //parametres de la requete
 	const { title, Classe, mdp } = req.body; 
 
@@ -214,7 +215,14 @@ app.get('/delete/:id', (req, res) => {
 	res.redirect('/users');
 });
 
+
+//////////////////
+//Deconnexion////
+////////////////
+
+
 app.get('/logout',function(req,res){
+	//supression du cookie
 	req.session.destroy(function(err) {
 	  if(err) {
 		console.log(err);
@@ -223,6 +231,10 @@ app.get('/logout',function(req,res){
 	  }
 	});
   });
+  app.get('*', function(req, res){
+	res.render('404');
+  });
+
 ///////////////////////////
 //Lancement du serveur////
 /////////////////////////
