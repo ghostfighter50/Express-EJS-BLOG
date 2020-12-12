@@ -12,6 +12,14 @@
 		   <h1>Login</h1>
 		   <form action="/login" method="POST">
 			  <div class="form-group">
+				  <% if(fail == true) { %> 
+					<br>
+					<br>
+					<div class="alert alert-danger alert-dismissible" style="padding: 10px;">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<strong>Erreur !</strong> Votre nom et/ou mot de passe est incorrect
+					  </div>
+				<% } %> 
 				 <label for="title">Nom</label>
 				 <input 
 					type="text" 

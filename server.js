@@ -9,6 +9,7 @@ var fs = require("fs")
 var app = express();
 var bodyParser = require('body-parser');
 var rateLimit = require("express-rate-limit");
+var favicon = require('serve-favicon');
 var ssn 
 
  //////////////////////////////
@@ -39,7 +40,7 @@ var  data = JSON.parse(readJson);
 //////////////////////////////
 
 
-
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/views'));
 app.use("/add", apiLimiter);
@@ -71,7 +72,7 @@ app.get('/about', function(req, res) {
 app.get('/login', function(req, res) {
 	ssn = req.session
 	if(ssn.loggedin == true){res.redirect("/users")}
-    else res.render('login');
+    else res.render('login',{fail : false});
 });
 
 app.post('/login',apiLimiter, (req, res) => {
@@ -87,7 +88,7 @@ app.post('/login',apiLimiter, (req, res) => {
 	 return false
 	 }
 	}
-	if(creds() == false) return res.redirect("/login")
+	if(creds() == false) return res.render("login", {fail : true})
 })
 
 //add.ejs 
