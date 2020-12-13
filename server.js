@@ -10,6 +10,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var rateLimit = require("express-rate-limit");
 var favicon = require('serve-favicon');
+var morgan = require('morgan');
 var ssn 
 
  //////////////////////////////
@@ -44,6 +45,7 @@ app.use(favicon(__dirname + '/public/images/favicon.ico'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/views'));
 app.use("/add", apiLimiter);
+app.use(morgan('tiny'))
 app.use(session({resave : true, saveUninitialized : true, cookie: { path : '/', httpOnly: false, maxAge  : 24*60*60*1000}, secret: '1234567890QWERT'  }));
 app.set('view engine', 'ejs');
 
