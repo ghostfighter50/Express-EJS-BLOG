@@ -31,7 +31,8 @@ const apiLimiter = rateLimit({
 ////////////////////////
 
 
-
+const readBlogJson = fs.readFileSync('./data/users.json');
+var  blog = JSON.parse(readBlogJson);
 const readJson = fs.readFileSync('./data/users.json');
 var  data = JSON.parse(readJson);
 
@@ -226,7 +227,7 @@ app.get('/delete/:id', (req, res) => {
 ////////////////
 
 
-app.get('/logout',function(req,res){
+app.get('/logout',(req,res) => {
 	//supression du cookie
 	req.session.destroy(function(err) {
 	  if(err) {
@@ -240,6 +241,54 @@ app.get('/logout',function(req,res){
 	res.render('404');
   });
 
+///////////
+//Blog////
+/////////
+
+
+
+app.get('/posts', (req, res) => {
+	ssn = req.session
+
+	if(ssn.loggedin == true){
+	const { filter } = req.query;
+	let filterData = [];
+//Parametre de recherche
+	if (filter) {
+		for (let dt of blog) {
+			if (
+				dt.Title === filter ||
+				dt.Content === filter ||
+				dt.ID === parseFloat(filter)
+			) {
+				filterData.push(dt);
+			}
+		}
+	}
+
+	else {
+		//Selectionne toutes les donnees
+		filterData = blog;
+	}
+
+	res.render('posts', { data: filterData, filter });
+}
+else{
+	res.redirect('/login')
+}
+
+});
+
+app.post('/create' , (req, res) => {
+	const { ID, Title, Content } = req.body;
+	ssn = req.session
+
+	if(!ssn.loggedin) return res.redirect("/login")
+	else{data.push({ ID: blog.length + 1, Title: Title, Content: Content});
+	fs.writeFileSync('./data/blog.json', JSON.stringify(blog, null, 4));
+	res.redirect('/posts');
+}
+});
 ///////////////////////////
 //Lancement du serveur////
 /////////////////////////
