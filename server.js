@@ -45,9 +45,8 @@ var data = JSON.parse(readJson);
 
 
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
+app.use(bodyParser.json({limit: '10mb', extended: false}))
+app.use(bodyParser.urlencoded({limit: '10mb', extended: false}))
 app.use(express.static(__dirname + '/views'));
 app.use("/add", apiLimiter);
 app.use(morgan('tiny'))
