@@ -86,7 +86,8 @@ app.get('/', function(req, res) {
 //about.ejs 
 
 app.get('/about', function(req, res) {
-    res.render('about');
+    ssn = req.session
+    res.render('about', {username : ssn.username});
 });
 
 //login.ejs 
