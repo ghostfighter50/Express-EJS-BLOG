@@ -9,7 +9,7 @@
    <body>
       <div class="container">
          <header>
-            <%- include ('partials/header.ejs'); -%>
+            <%- include ('partials/header.ejs', {username : username }); -%>
          </header>
          <h1>Ajouter</h1>
          <form action="/add" method="POST">

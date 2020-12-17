@@ -1,6 +1,8 @@
 /////////////////////////////////
 //Importation des librairies////
 ///////////////////////////////
+
+
 var express = require('express');
 var session = require('express-session');
 var fs = require("fs")
@@ -10,6 +12,7 @@ var rateLimit = require("express-rate-limit");
 var favicon = require('serve-favicon');
 var morgan = require('morgan');
 var ssn
+
 
 //////////////////////////////
 //Limite de requete par IP////
@@ -41,22 +44,11 @@ var data = JSON.parse(readJson);
 
 
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(__dirname + '/views'));
 app.use("/add", apiLimiter);
 app.use(morgan('tiny'))
-app.use(session({
-    resave: true,
-    saveUninitialized: true,
-    cookie: {
-        path: '/',
-        httpOnly: false,
-        maxAge: 24 * 60 * 60 * 1000
-    },
-    secret: '1234567890QWERT'
-}));
+app.use(session({resave: true,saveUninitialized: true, cookie: { path: '/', httpOnly: false, maxAge: 24 * 60 * 60 * 1000}, secret: '1234567890QWERT'}));
 app.set('view engine', 'ejs');
 
 
@@ -70,7 +62,9 @@ app.set('view engine', 'ejs');
 //index.ejs 
 
 app.get('/', function(req, res) {
-    res.render('index');
+    ssn = req.session
+    if (!ssn.username) res.render('index', {username : false} );
+    else res.render('index', {username : ssn.username} )
 });
 
 //about.ejs 
@@ -86,7 +80,8 @@ app.get('/login', function(req, res) {
     if (ssn.loggedin == true) {
         res.redirect("/")
     } else res.render('login', {
-        fail: false
+        fail: false,
+        username : ssn.username
     });
 });
 
@@ -102,21 +97,25 @@ app.post('/login', apiLimiter, (req, res) => {
             if (data[i].mdp == mdp && data[i].Title === title) {
                 console.log("Login found !");
                 ssn.loggedin = true
+                ssn.username = title
                 res.redirect('/users')
                 return true
             }
             return false
         }
     }
-    if (creds() == false) return res.render("login", {
-        fail: true
-    })
+    if (creds() == false) {  
+        ssn.username = false
+        res.render("login", {fail: true, })}
 })
 
 //add.ejs 
 
 app.get('/add', (req, res) => {
-    res.render('add');
+    ssn = req.session
+    if (!ssn.username) res.render('add', {username : false} );
+    else res.render('add', {username : ssn.username} )
+
 });
 
 
@@ -181,7 +180,8 @@ app.get('/users', (req, res) => {
 
         res.render('users', {
             data: filterData,
-            filter
+            filter,
+            username : ssn.username
         });
     } else {
         res.redirect('/login')
@@ -209,7 +209,8 @@ app.get('/edit/:id', (req, res) => {
     }
 
     res.render('edit', {
-        data: data[dataId]
+        data: data[dataId],
+        username : ssn.username
     });
 });
 
@@ -316,7 +317,8 @@ app.get('/posts', (req, res) => {
     }
     res.render('posts', {
         blog: filterData,
-        filter
+        filter,
+        username : ssn.username
     });
 
 });
@@ -329,7 +331,7 @@ app.get('/create', (req, res) => {
     ssn = req.session
     if (!ssn.loggedin) return res.redirect("/login")
 
-    res.render('create');
+    res.render('create', {username : ssn.username});
 });
 
 
@@ -355,6 +357,7 @@ app.post('/create', (req, res) => {
 /////////////////
 
 app.get('/posts/:id', (req, res) => {
+    ssn = req.session
     const {
         id
     } = req.params;
@@ -366,7 +369,8 @@ app.get('/posts/:id', (req, res) => {
         ) {
             dataId = dt;
             res.render('post', {
-                dt: dt
+                dt: dt,
+                username : ssn.username
             });
         }
     }
@@ -403,7 +407,8 @@ app.get('/manage', (req, res) => {
 
         res.render('manage', {
             blog: filterData,
-            filter       });
+            filter,
+            username : ssn.username       });
     } else {
         res.redirect('/login')
     }
@@ -431,7 +436,8 @@ app.get('/edit-post/:id', (req, res) => {
     }
 
     res.render('edit-post', {
-        blog: blog[dataId]
+        blog: blog[dataId],
+        username : ssn.username
     });
 });
 

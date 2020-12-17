@@ -7,18 +7,25 @@
 					<li class="active"><a href="/">Home</a></li>
 					<li><a href="/about">About</a></li>
 					<li><a href="/posts">Posts</a></li>
-				  </ul>
+                  </ul>
+                <% if (username) { %>
+                 
                 <ul class="nav pull-right">
                     <li class="dropdown">
-                        <a href=" " class="dropdown-toggle" style="background-color: white; padding: 20px;" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>  Profil<b class="caret" ></b></a>
+                        <a href=" " class="dropdown-toggle" style="background-color: white; padding: 20px;" data-toggle="dropdown"> Bienvenue  <%= username %> <b class="caret" ></b></a>
                         <ul class="dropdown-menu">
-							<li><a href="/login"><span class="glyphicon glyphicon-share"></span>  Login</a></li>
 							<li><a href="/logout"><span class="glyphicon glyphicon-off"></span>   Logout</a></li>
                             <li><a href="/users"><span class="glyphicon glyphicon-tasks"></span>  Admin</a></li>
                             <li><a href="/manage"><span class="glyphicon glyphicon-list-alt"></span></span>  Manage Posts</a></li>
                         </ul>
                     </li>    
                 </ul>
+              <% } %>
+              <% if(!username) {%>*
+                <ul class="nav pull-right">
+                    <li style="background-color: white; padding: 20px;" ><a href="/login"><span class="glyphicon glyphicon-share"></span>  Login</a></li>
+                </ul>
+                <% } %> 
             </div>
         </div>
     </div>    
