@@ -3,6 +3,7 @@
 ///////////////////////////////
 
 
+
 var express = require('express');
 var session = require('express-session');
 var fs = require("fs")
@@ -44,11 +45,22 @@ var data = JSON.parse(readJson);
 
 
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 app.use(express.static(__dirname + '/views'));
 app.use("/add", apiLimiter);
 app.use(morgan('tiny'))
-app.use(session({resave: true,saveUninitialized: true, cookie: { path: '/', httpOnly: false, maxAge: 24 * 60 * 60 * 1000}, secret: '1234567890QWERT'}));
+app.use(session({
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        path: '/',
+        httpOnly: false,
+        maxAge: 24 * 60 * 60 * 1000
+    },
+    secret: '1234567890QWERT'
+}));
 app.set('view engine', 'ejs');
 
 
@@ -63,8 +75,12 @@ app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
     ssn = req.session
-    if (!ssn.username) res.render('index', {username : false} );
-    else res.render('index', {username : ssn.username} )
+    if (!ssn.username) res.render('index', {
+        username: false
+    });
+    else res.render('index', {
+        username: ssn.username
+    })
 });
 
 //about.ejs 
@@ -81,7 +97,7 @@ app.get('/login', function(req, res) {
         res.redirect("/")
     } else res.render('login', {
         fail: false,
-        username : ssn.username
+        username: ssn.username
     });
 });
 
@@ -104,17 +120,24 @@ app.post('/login', apiLimiter, (req, res) => {
             return false
         }
     }
-    if (creds() == false) {  
+    if (creds() == false) {
         ssn.username = false
-        res.render("login", {fail: true, })}
+        res.render("login", {
+            fail: true,
+        })
+    }
 })
 
 //add.ejs 
 
 app.get('/add', (req, res) => {
     ssn = req.session
-    if (!ssn.username) res.render('add', {username : false} );
-    else res.render('add', {username : ssn.username} )
+    if (!ssn.username) res.render('add', {
+        username: false
+    });
+    else res.render('add', {
+        username: ssn.username
+    })
 
 });
 
@@ -181,7 +204,7 @@ app.get('/users', (req, res) => {
         res.render('users', {
             data: filterData,
             filter,
-            username : ssn.username
+            username: ssn.username
         });
     } else {
         res.redirect('/login')
@@ -189,9 +212,11 @@ app.get('/users', (req, res) => {
 });
 
 
+
 /////////////////////////////////
 //Modification d'utilisateurs///
 ///////////////////////////////
+
 
 
 app.get('/edit/:id', (req, res) => {
@@ -210,7 +235,7 @@ app.get('/edit/:id', (req, res) => {
 
     res.render('edit', {
         data: data[dataId],
-        username : ssn.username
+        username: ssn.username
     });
 });
 
@@ -242,9 +267,13 @@ app.post('/edit/:id', (req, res) => {
     res.redirect('/users');
 });
 
+
+
 /////////////////////////////////
 //Suppression d'utilisateurs////
 ///////////////////////////////
+
+
 
 app.get('/delete/:id', (req, res) => {
     ssn = req.session
@@ -269,9 +298,11 @@ app.get('/delete/:id', (req, res) => {
 });
 
 
+
 //////////////////
 //Deconnexion////
 ////////////////
+
 
 
 app.get('/logout', (req, res) => {
@@ -288,9 +319,11 @@ app.get('/logout', (req, res) => {
 });
 
 
+
 ///////////
 //Blog////
 /////////
+
 
 
 app.get('/posts', (req, res) => {
@@ -318,20 +351,26 @@ app.get('/posts', (req, res) => {
     res.render('posts', {
         blog: filterData,
         filter,
-        username : ssn.username
+        username: ssn.username
     });
 
 });
+
+
 
 ///////////////////////
 //Creation de post////
 /////////////////////
 
+
+
 app.get('/create', (req, res) => {
     ssn = req.session
     if (!ssn.loggedin) return res.redirect("/login")
 
-    res.render('create', {username : ssn.username});
+    res.render('create', {
+        username: ssn.username
+    });
 });
 
 
@@ -352,9 +391,13 @@ app.post('/create', (req, res) => {
     }
 });
 
+
+
 ///////////////////
 //Voir un post////
 /////////////////
+
+
 
 app.get('/posts/:id', (req, res) => {
     ssn = req.session
@@ -370,16 +413,18 @@ app.get('/posts/:id', (req, res) => {
             dataId = dt;
             res.render('post', {
                 dt: dt,
-                username : ssn.username
+                username: ssn.username
             });
         }
     }
 });
 
 
+
 //////////////////////
 //Manager de Posts///
 ////////////////////
+
 
 
 app.get('/manage', (req, res) => {
@@ -408,7 +453,8 @@ app.get('/manage', (req, res) => {
         res.render('manage', {
             blog: filterData,
             filter,
-            username : ssn.username       });
+            username: ssn.username
+        });
     } else {
         res.redirect('/login')
     }
@@ -419,6 +465,7 @@ app.get('/manage', (req, res) => {
 ///////////////////////////
 //Modification de posts////
 /////////////////////////
+
 
 
 app.get('/edit-post/:id', (req, res) => {
@@ -437,7 +484,7 @@ app.get('/edit-post/:id', (req, res) => {
 
     res.render('edit-post', {
         blog: blog[dataId],
-        username : ssn.username
+        username: ssn.username
     });
 });
 
@@ -451,22 +498,23 @@ app.post('/edit-post/:id', (req, res) => {
     const {
         Title,
         Content,
-        
+
     } = req.body;
 
     for (let i = 0; i < blog.length; i++) {
         if (Number(id) === blog[i].ID) {
-			console.log(blog[i].Content)
-			blog[i].Title = Title;
-			blog[i].Content = Content;
+            console.log(blog[i].Content)
+            blog[i].Title = Title;
+            blog[i].Content = Content;
         }
     }
 
-   
+
 
     fs.writeFileSync('./data/blog.json', JSON.stringify(blog, null, 4));
     res.redirect('/manage');
 });
+
 
 
 ///////////////////////////
@@ -487,8 +535,8 @@ app.get('/delete-post/:id', (req, res) => {
         if (Number(id) !== blog[i].ID) {
             newData.push(blog[i]);
         } else {
-res.redirect("/manage")  
-      }
+            res.redirect("/manage")
+        }
 
     }
 
