@@ -84,7 +84,7 @@ app.get('/about', function(req, res) {
 app.get('/login', function(req, res) {
     ssn = req.session
     if (ssn.loggedin == true) {
-        res.redirect("/users")
+        res.redirect("/")
     } else res.render('login', {
         fail: false
     });
@@ -134,7 +134,6 @@ app.post('/add', (req, res) => {
         mdp
     } = req.body;
     ssn = req.session
-
     if (!ssn.loggedin) return res.redirect("/login")
     else {
         data.push({
@@ -158,7 +157,6 @@ app.post('/add', (req, res) => {
 
 app.get('/users', (req, res) => {
     ssn = req.session
-
     if (ssn.loggedin == true) {
         const {
             filter
@@ -197,6 +195,8 @@ app.get('/users', (req, res) => {
 
 
 app.get('/edit/:id', (req, res) => {
+    ssn = req.session
+    if (!ssn.loggedin) return res.redirect("/login")
     const {
         id
     } = req.params;
@@ -215,6 +215,8 @@ app.get('/edit/:id', (req, res) => {
 
 
 app.post('/edit/:id', (req, res) => {
+    ssn = req.session
+    if (!ssn.loggedin) return res.redirect("/login")
     const {
         id
     } = req.params; //parametres de la requete
@@ -244,6 +246,8 @@ app.post('/edit/:id', (req, res) => {
 ///////////////////////////////
 
 app.get('/delete/:id', (req, res) => {
+    ssn = req.session
+    if (!ssn.loggedin) return res.redirect("/login")
     var {
         id
     } = req.params; //parametre de la requete
@@ -270,6 +274,8 @@ app.get('/delete/:id', (req, res) => {
 
 
 app.get('/logout', (req, res) => {
+    ssn = req.session
+    if (!ssn.loggedin) return res.redirect("/login")
     //supression du cookie
     req.session.destroy(function(err) {
         if (err) {
@@ -287,7 +293,8 @@ app.get('/logout', (req, res) => {
 
 
 app.get('/posts', (req, res) => {
-
+    ssn = req.session
+    if (!ssn.loggedin) return res.redirect("/login")
     const {
         filter
     } = req.query;
@@ -410,6 +417,8 @@ app.get('/manage', (req, res) => {
 
 
 app.get('/edit-post/:id', (req, res) => {
+    ssn = req.session
+    if (!ssn.loggedin) return res.redirect("/login")
     const {
         id
     } = req.params;
@@ -428,6 +437,8 @@ app.get('/edit-post/:id', (req, res) => {
 
 
 app.post('/edit-post/:id', (req, res) => {
+    ssn = req.session
+    if (!ssn.loggedin) return res.redirect("/login")
     const {
         id
     } = req.params; //parametres de la requete
@@ -459,6 +470,8 @@ app.post('/edit-post/:id', (req, res) => {
 
 
 app.get('/delete-post/:id', (req, res) => {
+    ssn = req.session
+    if (!ssn.loggedin) return res.redirect("/login")
     var {
         id
     } = req.params; //parametre de la requete
