@@ -330,7 +330,6 @@ app.get('/logout', (req, res) => {
 
 app.get('/posts', (req, res) => {
     ssn = req.session
-    if (!ssn.loggedin) return res.redirect("/login")
     const {
         filter
     } = req.query;
