@@ -10,9 +10,7 @@
    </head>
    <body>
       <div class="container">
-         <header>
-            <%- include ('partials/header.ejs', {username : username }); -%>
-         </header>
+        
          <form action="/manage" method="GET">
             <table class="table">
                <tr>
@@ -46,7 +44,7 @@
                <% }) %>
             </tbody>
          </table>
-         <a href="/create" class="btn btn-primary">Ajouter</a>         <a href="/logout" class="btn btn-primary">Deconnexion</a>
+         <a href="/create" class="btn btn-primary">Ajouter</a>         
       </div>
       <footer>
          <%- include ('partials/footer.ejs'); -%>
