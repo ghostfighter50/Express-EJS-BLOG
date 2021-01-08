@@ -212,6 +212,7 @@ app.get('/delete-post/:id', (req, res) => {
     for (let i = 0; i < blog.length; i++) {
         if (Number(id) !== blog[i].ID) {
             newData.push(blog[i]);
+            return true
         } else {
             return false
         }
