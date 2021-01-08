@@ -213,7 +213,7 @@ app.get('/delete-post/:id', (req, res) => {
         if (Number(id) !== blog[i].ID) {
             newData.push(blog[i]);
         } else {
-            return
+            return false
         }
 
     }
