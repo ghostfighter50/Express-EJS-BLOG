@@ -289,7 +289,7 @@ app.get('/delete/:id', (req, res) => {
             newData.push(data[i]);
             return res.redirect("/users")
         }
-        else return res.redirect("/users")
+        else res.redirect("/users")
 
     }
 
@@ -532,7 +532,7 @@ app.get('/delete-post/:id', (req, res) => {
             newData.push(blog[i]);
             return res.redirect("/manage")
         }
-        else return res.redirect("/manage")
+        else res.redirect("/manage")
 
     }
 
