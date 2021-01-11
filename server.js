@@ -276,7 +276,7 @@ app.post('/edit/:id', (req, res) => {
 
 
 
-app.get('/delete/:id', (req, res) => {
+app.get('/delete-post/:id', (req, res) => {
     ssn = req.session
     if (!ssn.loggedin) return res.redirect("/login")
     var {
@@ -286,16 +286,15 @@ app.get('/delete/:id', (req, res) => {
     const newData = [];
     for (let i = 0; i < data.length; i++) {
         if (Number(id) !== data[i].ID) {
-           newData.push(data[i]);
-           return res.redirect("/users")
-        } else {
-           return res.redirect('/users')
+            newData.push(data[i]);
+            return res.redirect("/users")
         }
+        else return res.redirect("/users")
 
     }
 
     data = newData;
-    fs.writeFileSync('./data/users.json', JSON.stringify(data, null, 4));
+    fs.writeFileSync('./data/users.json', JSON.stringify(blog, null, 4));
 });
 
 
