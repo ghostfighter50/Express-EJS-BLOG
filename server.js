@@ -286,7 +286,8 @@ app.get('/delete/:id', (req, res) => {
     const newData = [];
     for (let i = 0; i < data.length; i++) {
         if (Number(id) !== data[i].ID) {
-            return newData.push(data[i]);
+           newData.push(data[i]);
+           return res.redirect("/users")
         } else {
            return res.redirect('/users')
         }
@@ -295,7 +296,6 @@ app.get('/delete/:id', (req, res) => {
 
     data = newData;
     fs.writeFileSync('./data/users.json', JSON.stringify(data, null, 4));
-    res.redirect('/users');
 });
 
 
@@ -539,7 +539,6 @@ app.get('/delete-post/:id', (req, res) => {
 
     blog = newData;
     fs.writeFileSync('./data/blog.json', JSON.stringify(blog, null, 4));
-    res.redirect('/');
 });
 
 
