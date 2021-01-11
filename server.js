@@ -286,9 +286,9 @@ app.get('/delete/:id', (req, res) => {
     const newData = [];
     for (let i = 0; i < data.length; i++) {
         if (Number(id) !== data[i].ID) {
-            newData.push(data[i]);
+            return newData.push(data[i]);
         } else {
-            res.redirect('/users')
+           return res.redirect('/users')
         }
 
     }
