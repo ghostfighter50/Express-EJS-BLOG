@@ -524,8 +524,7 @@ app.post('/edit-post/:id', (req, res) => {
 
 
 app.get('/delete-post/:id', (req, res) => {
-    ssn = req.session
-    if (!ssn.loggedin) return res.redirect("/login")
+    
     var {
         id
     } = req.params; //parametre de la requete
@@ -534,15 +533,15 @@ app.get('/delete-post/:id', (req, res) => {
     for (let i = 0; i < blog.length; i++) {
         if (Number(id) !== blog[i].ID) {
             newData.push(blog[i]);
-        } else {
-            res.redirect("/manage")
+            return res.redirect("/")
         }
+        else res.redirect("/")
 
     }
 
     blog = newData;
     fs.writeFileSync('./data/blog.json', JSON.stringify(blog, null, 4));
-    res.redirect('/manage');
+    res.redirect('/');
 });
 
 
