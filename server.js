@@ -276,7 +276,7 @@ app.post('/edit/:id', (req, res) => {
 
 
 
-app.get('/delete-post/:id', (req, res) => {
+app.get('/delete/:id', (req, res) => {
     ssn = req.session
     if (!ssn.loggedin) return res.redirect("/login")
     var {
