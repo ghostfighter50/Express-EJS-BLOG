@@ -428,8 +428,8 @@ app.get('/posts/:id', (req, res) => {
 
 
 app.get('/manage', (req, res) => {
-    ssn = req.session
-    if (ssn.loggedin == true) {
+     ssn = req.session
+    if (!ssn.loggedin) return res.redirect("/login")
         const {
             filter
         } = req.query;
@@ -455,9 +455,6 @@ app.get('/manage', (req, res) => {
             filter,
             username: ssn.username
         });
-    } else {
-        res.redirect('/login')
-    }
 });
 
 
@@ -524,7 +521,8 @@ app.post('/edit-post/:id', (req, res) => {
 
 
 app.get('/delete-post/:id', (req, res) => {
-    
+    ssn = req.session
+    if (!ssn.loggedin) return res.redirect("/login")
     var {
         id
     } = req.params; //parametre de la requete
@@ -533,9 +531,9 @@ app.get('/delete-post/:id', (req, res) => {
     for (let i = 0; i < blog.length; i++) {
         if (Number(id) !== blog[i].ID) {
             newData.push(blog[i]);
-            return res.redirect("/")
+            return res.redirect("/manage")
         }
-        else return res.redirect("/")
+        else return res.redirect("/manage")
 
     }
 
