@@ -535,7 +535,7 @@ app.get('/delete-post/:id', (req, res) => {
             newData.push(blog[i]);
             return res.redirect("/")
         }
-        else res.redirect("/")
+        else return res.redirect("/")
 
     }
 
